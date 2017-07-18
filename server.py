@@ -25,18 +25,22 @@ def readWord2c(adr):
     if (val >= 0x8000):
         return -((65535 - val) + 1)    
     else :
-        return val
+	    return val
 
 def dist(a,b):
     return math.sqrt((a*a) + (b*b))
 
 def getYRotation(x,y,z):
-    radians = math.atan2(x, dist(y,z))    
-    return -math.degrees(radians)
+#    radians = math.atan2(x, dist(y,z))    
+#    return -math.degrees(radians)
+	return math.atan2(-y, z) * 180/math.pi
+#	return math.atan2(x, math.sqrt(y*y + z*z)) * 180/math.pi
 
 def getXRotation(x,y,z):
-    radians = math.atan2(y, dist(x,z))
-    return math.degrees(radians)
+#    radians = math.atan2(y, dist(x,z))
+#    return math.degrees(radians)
+	return math.atan2(-x, math.sqrt(y*y + z*z)) * 180/math.pi
+#	return math.atan2(-x, z) * 180/math.pi
 
 class index:
     def GET(self):
@@ -45,6 +49,7 @@ class index:
         accelZOut = readWord2c(0x3f)
 
         return str(getXRotation(accelXOut,accelYOut,accelZOut))+" "+str(getYRotation(accelXOut,accelYOut,accelZOut))
+
 
 if __name__ == "__main__":
     bus.write_byte_data(address, power_mgmt_1,0)
